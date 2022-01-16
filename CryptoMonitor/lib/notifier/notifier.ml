@@ -1,0 +1,1 @@
+let success sym = Printf.printf "Cena %s spadła!" sym
