@@ -1,4 +1,4 @@
 (executable
  (public_name CryptoMonitor)
  (name main)
- (libraries Notifier))
+ (libraries Notifier Interval lwt cohttp cohttp-lwt-unix yojson))

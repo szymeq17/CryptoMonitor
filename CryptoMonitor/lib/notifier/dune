@@ -1,2 +1,3 @@
 (library
- (name Notifier))
+ (name Notifier)
+ (libraries core))
