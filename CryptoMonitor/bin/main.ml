@@ -1,10 +1,9 @@
-(* open Lwt
+open Lwt
 open Cohttp_lwt_unix
 open Core
-open Notifier *)
-open Interval
+open Notifier
 
-(* let body symbol =
+let body symbol =
   Client.get (Uri.of_string ("https://min-api.cryptocompare.com/data/price?fsym=" ^ symbol ^ "&tsyms=USD")) >>= fun (_, body) ->
   body |> Cohttp_lwt.Body.to_string >|= fun body ->
   body
@@ -16,5 +15,4 @@ let () =
   let open Yojson.Basic.Util in
   try (let price = json |> member "USD" |> to_float in
         price_drop sym price "USD") with
-    _ -> coin_not_found sym) *)
-let () = repeatEveryNSeconds 10. (Printf.printf "Powtarzam co %d sekund!" 5)
+    _ -> coin_not_found sym)
