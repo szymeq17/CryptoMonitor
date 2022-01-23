@@ -10,6 +10,11 @@ let json_to_coin json =
   Coin(symbol, price, currency)
 
   let get_coin_list json = 
-  let open Yojson.Basic.Util in
-  let coin_list = json |> member "coins" |> to_list in
-  List.map json_to_coin coin_list
+    let open Yojson.Basic.Util in
+    let coin_list = json |> member "coins" |> to_list in
+    coin_list
+
+  let get_interval json =
+    let open Yojson.Basic.Util in
+    let interval = json |> member "interval" |> to_int in
+    interval

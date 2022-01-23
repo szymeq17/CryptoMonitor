@@ -10,9 +10,8 @@ let body symbol currency =
   body |> Cohttp_lwt.Body.to_string 
   >|= fun body -> body
   
-let check_prices () = 
-  let json = get_config_json "config.json" in
-  List.iter (get_coin_list json) ~f:(fun coin ->
+let check_prices json_coins = 
+  List.iter (List.map json_coins ~f:json_to_coin) ~f:(fun coin ->
     match coin with
     | Coin(symbol, target_price, currency) ->
   let body = Lwt_main.run (body symbol currency) in
@@ -24,3 +23,19 @@ let check_prices () =
         price_drop symbol price currency
         else ()) with
     _ -> coin_not_found symbol)
+
+
+let rec run_monitor coins interval =
+  check_prices coins;
+  print_endline "";
+  Unix.sleep interval;
+  run_monitor coins interval
+
+  let run () =
+  let config = get_config_json "config.json" in
+  let json_coins = get_coin_list config in
+  let interval = get_interval config in
+  run_monitor json_coins interval
+  
+
+
