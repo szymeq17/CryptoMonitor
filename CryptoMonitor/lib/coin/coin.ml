@@ -1,0 +1,1 @@
+type coin = Coin of string * float * string

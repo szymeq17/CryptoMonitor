@@ -10,10 +10,13 @@ let body symbol =
   body
 
 let () =
-  List.iter (read_coins_to_track "config.json") ~f:(fun sym ->
-  let body = Lwt_main.run (body sym) in
+  let json = get_config_json "config.json" in
+  List.iter (get_coin_list json) ~f:(fun coin ->
+    match coin with
+    | Coin(symbol, _, _) ->
+  let body = Lwt_main.run (body symbol) in
   let json = Yojson.Basic.from_string body in
   let open Yojson.Basic.Util in
   try (let price = json |> member "USD" |> to_float in
-        price_drop sym price "USD") with
-    _ -> coin_not_found sym)
+        price_drop symbol price "USD") with
+    _ -> coin_not_found symbol)
