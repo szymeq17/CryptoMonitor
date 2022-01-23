@@ -1,4 +1,4 @@
 (executable
  (public_name CryptoMonitor)
  (name main)
- (libraries Notifier lwt cohttp cohttp-lwt-unix yojson Config))
+ (libraries core Monitor))
