@@ -5,11 +5,17 @@ let get_config_json path = Yojson.Basic.from_file path
 let validate_coin = function
   | Inapplicable   -> true
   | Coin (symbol, _, currency, _,
-          _, _, _) ->
-      (symbol != "" || currency != "")
+          _, applicable, _) ->
+      ((symbol != "" || currency != "") && applicable)
 
 let fix_coin coin = 
   if validate_coin coin then coin else Inapplicable
+
+let choose_triggerer s =
+  let uppered = String.uppercase_ascii s in
+  if uppered = "PROFIT" then Profit
+  else if uppered = "PRICE_AND_PROFIT" then PriceAndProfit
+  else Price  
 
 let json_to_coin json =
   let open Yojson.Basic.Util in
@@ -29,12 +35,12 @@ let json_to_coin json =
       | None   -> ""
   in
   let pocket =
-    match json |> member "price" |> to_float_option with
+    match json |> member "pocket" |> to_float_option with
       | Some v -> v
       | None   -> 0.0
   in
   let target_profit =
-    match json |> member "price" |> to_float_option with
+    match json |> member "targetProfit" |> to_float_option with
       | Some v -> v
       | None   -> 0.0
   in
@@ -45,13 +51,8 @@ let json_to_coin json =
   in
   let notification_triggerer =
     match json |> member "notificationTriggerer" |> to_string_option with
-      | Some v -> 
-        (match String.uppercase_ascii v with
-          | "PRICE"            -> Price
-          | "PROFIT"           -> Profit
-          | "PRICE_AND_PROFIT" -> PriceAndProfit
-          | _          -> Price)
-      | None   -> PriceAndProfit
+      | Some v -> choose_triggerer v
+      | None   -> Price
   in
   fix_coin (Coin(symbol, target_price, currency, pocket,
                 target_profit, applicable, notification_triggerer))
