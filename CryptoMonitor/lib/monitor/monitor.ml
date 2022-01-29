@@ -43,7 +43,11 @@ let check_prices json_coins =
   try (
     let price = json |> member currency |> to_float in
     perform_action coin price) with
-    _ -> coin_price_not_found symbol)
+    _ -> 
+      try (
+        let price = json |> member currency |> to_int |> Int.to_float in
+        perform_action coin price) with 
+      _ -> coin_price_not_found symbol)
 
 let rec run_monitor coins interval =
   check_prices coins;
