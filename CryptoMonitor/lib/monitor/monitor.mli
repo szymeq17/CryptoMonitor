@@ -1,1 +1,1 @@
-val run : unit -> 'a
+val run : unit -> unit

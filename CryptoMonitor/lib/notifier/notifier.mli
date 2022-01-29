@@ -7,3 +7,6 @@ val coin_price_not_found : string -> unit
 val crypto_monitor_start : unit
 val coins_info : coin list -> unit
 val interval_info : int -> unit
+val start_tracking : unit -> unit
+val config_loaded : unit -> unit
+val config_not_found : unit -> unit

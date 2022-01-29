@@ -84,17 +84,23 @@ let rec run_monitor coins symbols currencies interval =
   run_monitor coins symbols currencies interval
 
 let run () =
-  let config = get_config_json "config.json" in
-  let json_coins = get_coin_list config in
-  let coins = List.map json_coins ~f:json_to_coin in
-  let symbols = set_to_string (get_symbols coins) in
-  let currencies = set_to_string (get_currencies coins) in
-  let interval = 
-    match get_interval config with
-      | Some v -> v
-      | None   -> 30
-  in
-  crypto_monitor_start;
-  coins_info coins;
-  interval_info interval;
-  run_monitor coins symbols currencies interval
+  try (
+    let config = get_config_json "config.json" in
+    config_loaded ();
+    let json_coins = get_coin_list config in
+    let coins = List.map json_coins ~f:json_to_coin in
+    let symbols = set_to_string (get_symbols coins) in
+    let currencies = set_to_string (get_currencies coins) in
+    let interval = 
+      match get_interval config with
+        | Some v -> v
+        | None   -> 30
+    in
+    crypto_monitor_start;
+    coins_info coins;
+    interval_info interval;
+    start_tracking ();
+    run_monitor coins symbols currencies interval) with
+  _ -> 
+    crypto_monitor_start;
+    config_not_found ()

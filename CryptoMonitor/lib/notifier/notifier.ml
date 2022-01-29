@@ -47,14 +47,21 @@ let coin_info coin =
 
 
 let interval_info interval =
-    Printf.printf "\n\n\x1b[1;37m%s\x1b[1;34m%ds\x1b[0m\n\n" "Interval: " interval
+    Printf.printf "\n\x1b[1;37m%s\x1b[1;34m%ds\x1b[0m\n\n" "Interval: " interval
 let coins_info coins =
-    Printf.printf "\n\n\x1b[1;37m%s\x1b[0m\n\n" "Tracked coins:";
+    Printf.printf "\n\x1b[1;37m%s\x1b[0m\n\n" "Tracked coins:";
     List.iter ~f:(fun coin -> coin_info coin) coins
      
+let start_tracking () =
+    Printf.printf "\n\x1b[1;37m%s\x1b[0m\n\n" "Tracking started!"
 let crypto_monitor_start = 
     try (
         let name = In_channel.read_all "./lib/notifier/start.txt" in
-        Printf.printf "\x1b[0;34m%s\x1b[0m" name) with
+        Printf.printf "\x1b[1;34m%s\x1b[0m" name) with
     _ -> Printf.printf "\x1b[0;33m[WARN]\x1b[0m %s\n" "File: /lib/notisfier/start.txt is missing!"
         
+let config_loaded () = 
+    Printf.printf "\n\x1b[1;32m%s\x1b[0m\n\n" "Config file has been loaded successfully!"
+
+let config_not_found () = 
+    Printf.printf "\n\x1b[1;31m%s\x1b[0m\n\n" "Config file \"config.json\" not found! Aborting..."
