@@ -94,4 +94,7 @@ let run () =
       | Some v -> v
       | None   -> 30
   in
+  crypto_monitor_start;
+  coins_info coins;
+  interval_info interval;
   run_monitor coins symbols currencies interval
