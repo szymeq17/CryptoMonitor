@@ -32,8 +32,10 @@ let perform_action coin current_price =
             target_profit, _, notification_triggerer) ->
         match notification_triggerer with
             | Price -> price_action symbol current_price target_price currency
-            | Profit -> price_and_profit_action symbol current_price target_price pocket target_profit currency
-            | PriceAndProfit -> price_and_profit_action symbol current_price target_price pocket target_profit currency
+            | Profit -> 
+              price_and_profit_action symbol current_price target_price pocket target_profit currency
+            | PriceAndProfit -> 
+              price_and_profit_action symbol current_price target_price pocket target_profit currency
   
 let check_prices coins symbols currencies = 
   let body = Lwt_main.run (body symbols currencies) in
@@ -48,7 +50,8 @@ let check_prices coins symbols currencies =
       perform_action coin price) with
       _ -> 
         try (
-          let price = json |> member symbol |> member currency |> to_int |> Int.to_float in
+          let price = json |> member symbol |> member currency 
+          |> to_int |> Int.to_float in
           perform_action coin price) with 
         _ -> coin_price_not_found symbol)
 
@@ -60,7 +63,8 @@ let get_symbols coins =
     match coins with
       | [] -> symbols
       | Inapplicable :: coins -> find_symbols coins symbols
-      | Coin(symbol, _, _, _, _, _, _) :: coins -> find_symbols coins (Symbols.add symbols symbol)
+      | Coin(symbol, _, _, _, _, _, _) :: coins -> 
+        find_symbols coins (Symbols.add symbols symbol)
   in
   find_symbols coins Symbols.empty
 
@@ -69,7 +73,8 @@ let get_currencies coins =
     match coins with
       | [] -> currencies
       | Inapplicable :: coins -> find_currencies coins currencies
-      | Coin(_, _, currency, _, _, _, _) :: coins -> find_currencies coins (Currencies.add currencies currency)
+      | Coin(_, _, currency, _, _, _, _) :: coins -> 
+        find_currencies coins (Currencies.add currencies currency)
   in
   find_currencies coins Currencies.empty
 let rec run_monitor coins symbols currencies interval =
