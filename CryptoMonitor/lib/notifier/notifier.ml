@@ -9,19 +9,21 @@ let get_current_time () =
 
 let price_drop sym target_price curr_price currency = 
     Printf.printf 
-        "\n\x1b[1;37m[%s]\x1b[1;34m %s\x1b[0m price is under \x1b[1;33m%f\x1b[0m now! Current price: \x1b[1;37m%f\x1b[0;34m %s\x1b[0m\n" 
+        "\n\x1b[1;37m[%s]\x1b[1;34m %s\x1b[0m price is under \x1b[1;33m%f\x1b[0m\x1b[0;34m %s\x1b[0m now! Current price: \x1b[1;37m%f\x1b[0;34m %s\x1b[0m\n" 
         (get_current_time ())
         sym
         target_price
+        currency
         curr_price
         currency
 
 let price_drop_with_profit sym target_price curr_price profit currency = 
     Printf.printf 
-        "\n\x1b[1;37m[%s]\x1b[1;34m %s\x1b[0m price is under \x1b[1;33m%f\x1b[0m now! Current price: \x1b[1;37m%f\x1b[0;34m %s\x1b[0m, Profit: \x1b[1;37m%f\x1b[0;34m %s\x1b[0m\n" 
+        "\n\x1b[1;37m[%s]\x1b[1;34m %s\x1b[0m price is under \x1b[1;33m%f\x1b[0m\x1b[0;34m %s\x1b[0m now! Current price: \x1b[1;37m%f\x1b[0;34m %s\x1b[0m, Profit: \x1b[1;37m%f\x1b[0;34m %s\x1b[0m\n" 
         (get_current_time ())
         sym
         target_price
+        currency
         curr_price
         currency
         profit
