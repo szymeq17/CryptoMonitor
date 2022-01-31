@@ -25,9 +25,14 @@ let json_to_coin json =
       | None   -> ""
   in 
   let target_price = 
+    try (
     match json |> member "price" |> to_float_option with
       | Some v -> v
-      | None   -> 0.0
+      | None   -> 0.0) with
+    _ -> match json |> member "price" |> to_int_option with
+        | Some v -> Int.to_float v
+        | None   -> 0.0
+
   in
   let currency = 
     match json |> member "currency" |> to_string_option with
@@ -40,9 +45,14 @@ let json_to_coin json =
       | None   -> 0.0
   in
   let target_profit =
+    try (
     match json |> member "targetProfit" |> to_float_option with
       | Some v -> v
-      | None   -> 0.0
+      | None   -> 0.0) with
+    _ -> match json |> member "targetProfit" |> to_int_option with
+        | Some v -> Int.to_float v
+        | None   -> 0.0
+
   in
   let applicable =
     match json |> member "applicable" |> to_bool_option with
